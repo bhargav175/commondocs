@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/bhargav175/commondocs#readme",
   "devDependencies": {
-    "handlebars": "^4.0.3"
+    "handlebars": "^4.0.3",
+    "mkdirp": "^0.5.1"
   }
 }

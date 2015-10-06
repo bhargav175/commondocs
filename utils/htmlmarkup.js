@@ -30,7 +30,7 @@ module.exports = {
 
 		  var template = handlebars.compile(source);
 		  html = template(data);
-		  console.log(html);
+		  //console.log(html);
 
 
 

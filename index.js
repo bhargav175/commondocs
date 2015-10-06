@@ -13,7 +13,7 @@ userArgs.map(function(i,index){
 		argMap.path = userArgs[index+1];
 	}
 	if(i === "--dest"){
-		argMap.dest = userArgs[index+1];
+		argMap.destPath = userArgs[index+1];
 	}
 })
 
@@ -22,16 +22,11 @@ userArgs.map(function(i,index){
 
 //find $directory -type f -name "*.in"
 console.log(argMap);
-if(argMap.path && argMap.dest){
+if(argMap.path && argMap.destPath){
 	var child = exec('find '+argMap.path +' -type f -name "*.js"', function(err, stdout, stderr) {
 	 	var files = stdout.split("\n");
 	 	files.pop();
-	 	for(var i in files){
-	 		var file = files[i];
-	 		filegenerator.generate(file,argMap.dest);
-	 		
-	 	}
-		
+	 	filegenerator.generate(files,argMap);
 	});	
 }
 

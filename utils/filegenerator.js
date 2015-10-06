@@ -1,40 +1,47 @@
-var path = require('path');
 var exec = require('child_process').exec;
 var fs = require('fs');
 var cdhtmlmarkup = require("./htmlmarkup");
+var CDFile = require("../classes/CDFile");
+
 module.exports = {
-	getFilename : function(filePath){
-		var extension = path.extname(filePath);
-		return path.basename(filePath,extension);
+	
+	content : {},
+	destPath:"",
+	path : "",
+	generate : function(files,argMap){
+		if(argMap.destPath[argMap.destPath.length-1]=="/"){
+			argMap.destPath = argMap.destPath.substr(0,argMap.destPath.length-2);
+		}
+		this.destPath = argMap.destPath;
+		this.sourcePath = argMap.path;
+		this.content = {};
+		for(var i in files){
+			var filePath = files[i];
+			this.content[filePath]=new CDFile(filePath,this.sourcePath, this.destPath);
+		}
+		//console.log(this.content);
+		for(var i in files){
+			this.readFile(this.content[files[i]],this.writeFile);	
+		}
 	},
 
-	generate : function(file,destPath){
-		this.readFile(file,this.writeFile,destPath);
-	},
-	writeFile: function(data,fileName,destPath){
+
+	writeFile: function(data,fileName,destFilePath){
 		var self = this;
-		var child = exec('ls -a '+destPath, function(err, stdout, stderr) { 
-				if(err){
-					return console.log(err);
-				}
-				if(stderr){
-					return console.log(stderr);
-				}
-				var destFilePath = destPath+"/"+fileName+".html";
+		fs.writeFile(destFilePath,cdhtmlmarkup.getHtmlMarkup(data,fileName) , function(err) {
+		    if(err) {
+		        return console.log(err);
+		    }
 
-				fs.writeFile(destFilePath,cdhtmlmarkup.getHtmlMarkup(data,fileName) , function(err) {
-				    if(err) {
-				        return console.log(err);
-				    }
-
-				    console.log("Writing "+destFilePath);
-				}); 
+		    console.log("Writing "+destFilePath);
+		}); 
 				
-		 });
 },
 
-readFile :function(filePath,callBack,destPath){
-	var fileName = this.getFilename(filePath);
+readFile :function(file,callBack){
+	var fileName = file.fileName;
+	var filePath = file.filePath;
+	var destFilePath = file.destPath;
 	 		
 	fs.readFile(filePath, 'utf8', function (err,data) {
 		  if (err) {
@@ -42,7 +49,7 @@ readFile :function(filePath,callBack,destPath){
 		    return null;
 		  }
 		  //console.log(data);
-		  callBack(data,fileName,destPath);
+		  callBack(data,fileName,destFilePath);
 		});
 	
 }
