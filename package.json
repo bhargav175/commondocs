@@ -23,7 +23,11 @@
   },
   "homepage": "https://github.com/bhargav175/commondocs#readme",
   "devDependencies": {
+    "escodegen": "^1.7.0",
+    "escodegen-jsx": "0.1.0-1.4.2dev",
+    "esprima": "^2.6.0",
     "handlebars": "^4.0.3",
-    "mkdirp": "^0.5.1"
+    "mkdirp": "^0.5.1",
+    "underscore": "^1.8.3"
   }
 }

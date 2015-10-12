@@ -1,6 +1,7 @@
 var path = require('path');
 var fs = require('fs');	
 var mkdirp = require("mkdirp");
+
 var CDFile = function(filePath,sourcePath,destDir){
 
 
@@ -33,7 +34,10 @@ var CDFile = function(filePath,sourcePath,destDir){
 			}
 			dirName = this.destDir + "/" + this.relativeDir;
 		}
-		return dirName +this.fileNameNoExt+".html";;
+		if(dirName.length > 0 && dirName[dirName.length-1]!="/"){
+			dirName+="/";
+		}
+		return dirName +this.fileNameNoExt+".html";
 	};
 	
 	//Outer dir
